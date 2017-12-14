@@ -1,0 +1,64 @@
+h1,
+h2 {
+    font-family: sans-serif;
+    color: grey;
+    border-top: 2px solid black;
+}
+
+h1 {
+    text-decoration: solid;
+    color: red;
+}
+
+h2 {
+    border-top: 2px dashed lightblue;
+}
+
+p {
+    font-family: sans-serif;
+}
+
+.d {
+    letter-spacing: 10px;
+}
+
+.google {
+    font-family: 'test', sans-serif;
+    border-bottom: 10px dotted blue;
+    display: inline-block;
+}
+
+.boxx {
+    border: 10px solid rgb(66, 10, 10);
+    padding: 50px;
+    display: inline-block;
+    background-image: url("../images/2.jpg");
+    background-repeat: no-repeat;
+}
+
+.boxx em {
+    font-size: 36px;
+}
+
+.cd {
+    font-size: 28px;
+}
+
+.artist {
+    font-variant: small-caps;
+    font-size: 20px;
+}
+
+.wei {
+    display: inline-block;
+}
+
+.wei>.frist:hover {
+    font-size: 30px;
+    color: red;
+}
+
+.wei a:visited {
+    color: blue;
+    font-size: 28px;
+}

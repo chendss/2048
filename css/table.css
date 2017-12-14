@@ -1,0 +1,18 @@
+th,td {
+    border: 1px solid black;
+    padding: 10px;
+    border-spacing: 20px;
+}
+tr {
+    border: 1px dashed black;
+}
+tr:nth-child(2n+3){
+    background: red;
+}
+table {
+    border: 2px solid black;
+    border-spacing: 5px;
+}
+p:nth-child(2n){
+    background: red;
+}

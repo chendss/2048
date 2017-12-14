@@ -1,0 +1,15 @@
+.fo{
+    background: red;
+    width: 100px !important;
+    height: 700px !important;
+    float: right;
+    margin: 0px 10px 10px 40px;
+}
+
+.to {
+    float: left;
+    height: 800px;
+    width: 500px;
+    margin: 0px 10px 10px 10px;
+    background: lightgreen;
+}

@@ -1,0 +1,29 @@
+img {
+    width: 50%;
+    height: 50%;
+}
+
+.blockquote {
+    padding: 10px;
+}
+
+ul {
+    top: 0px;
+    right: 0px;
+}
+
+body {
+    text-align: center;
+    background: rgb(231, 211, 155);
+}
+
+.little {
+    width: 20%;
+    height: 20%;
+}
+
+.big {
+    position: relative;
+    transform: translateY(-50%);
+    top: 50%;
+}

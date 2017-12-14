@@ -1,0 +1,144 @@
+reord {
+    display: block;
+}
+
+body {
+    text-align: center;
+    background: white;
+}
+
+line {
+    display: block;
+    text-align: center;
+    margin: 10px;
+    position: relative;
+}
+
+cell {
+    margin: 0.5px;
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    vertical-align: top;
+    background: rgba(238, 228, 218, 0.35);
+    border-radius: 12%;
+    font-size: 55px;
+    font-family: sans-serif;
+    font-weight: bold;
+    position: relative;
+}
+
+checkerboard {
+    opacity: 0.8;
+    background: #776e65;
+    display: inline-block;
+    border-radius: 4%;
+}
+
+number {
+    border-radius: 12%;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    line-height: 90px;
+    position: relative;
+    margin: 0px;
+}
+
+.rightMove-0 {
+    transform: translate(0px, 0px);
+    transition: 0.03s;
+    z-index: 2;
+}
+
+.rightMove-1 {
+    transform: translate(95px, 0px);
+    transition: 0.03s;
+    z-index: 2;
+}
+
+.rightMove-2 {
+    transform: translate(190px, 0px);
+    transition: 0.03s;
+    z-index: 2;
+}
+
+.rightMove-3 {
+    transform: translate(282px, 0px);
+    transition: 0.03s;
+    z-index: 2;
+}
+
+.leftMove-0 {
+    transform: translate(0.1px, 0px);
+    transition: 0.03s;
+    z-index: 2;
+}
+.leftMove-1 {
+    transform: translate(-95px, 0px);
+    transition: 0.03s;
+    z-index: 2;
+}
+
+.leftMove-2 {
+    transform: translate(-190px, 0px);
+    transition: 0.03s;
+    z-index: 2;
+}
+
+.leftMove-3 {
+    transform: translate(-282px, 0px);
+    transition: 0.03s;
+    z-index: 2;
+}
+
+.enlarge {
+    transform: scale(1.2, 1.2);
+    transition: 1.1s;
+}
+
+.p2 {
+    background: #eee4da;
+}
+
+.p4 {
+    background: #ede0c8;
+}
+
+.p8 {
+    background: #f2b179;
+}
+
+.p16 {
+    background: #f59563;
+}
+
+.p32 {
+    background: #f67c5f;
+}
+
+.p64 {
+    background: #f65e3b;
+}
+
+.p128 {
+    background: #edcf72;
+}
+
+.p256 {
+    background: #edcc61;
+}
+
+.p512 {
+    background: #edc850;
+}
+
+.p1024 {
+    background: #edc53f;
+}
+
+.p2048 {
+    background: #edc22e;
+}
