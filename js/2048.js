@@ -70,9 +70,6 @@ var moveDict = function (index, lineNumbers) {
         }
         let startId = lineNumbers[index].getAttribute('id')
         let endId = lineNumbers[index + count].getAttribute('id')
-        if (endId === undefined) {
-            log('undefined      ', index, lineNumbers[index], lineNumbers.length)
-        }
         result = {
             'start': startId,
             'end': endId,
