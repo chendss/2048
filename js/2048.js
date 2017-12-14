@@ -46,7 +46,7 @@ NumberArray.prototype.verticalNumbersInit = function () {
     })
 }
 
-NumberArray.prototype.lineReversed = function (numbers) {
+NumberArray.prototype.lineReversed = function () {
     return this.numbers.map((l) => {
         let nl = Array.from(l)
         return nl.reverse()
@@ -55,7 +55,7 @@ NumberArray.prototype.lineReversed = function (numbers) {
 
 NumberArray.prototype.init = function () {
     this.numbersInit()
-    this.lineFlip = this.lineReversed(this.lineReversed)
+    this.lineFlip = this.lineReversed()
 }
 
 var moveDict = function (index, lineNumbers) {
@@ -70,6 +70,9 @@ var moveDict = function (index, lineNumbers) {
         }
         let startId = lineNumbers[index].getAttribute('id')
         let endId = lineNumbers[index + count].getAttribute('id')
+        if (endId === undefined) {
+            log('undefined      ', index, lineNumbers[index], lineNumbers.length)
+        }
         result = {
             'start': startId,
             'end': endId,
@@ -88,11 +91,14 @@ var moveDictList = function (list) {
         }
     })
     dictList = dictList.filter(((d) => {
-        let noMove = d['start'] === d['end']
-        if (noMove) {
-            targetDict.exclude.push(d['start'])
+        if (Object.keys(d).length > 0) {
+            if (d['start'] === d['end']) {
+                targetDict.exclude.push(d['start'])
+            }
+            return true
+        } else {
+            return false
         }
-        return Object.keys(d).length > 0 && !noMove
     }))
     return dictList
 }
@@ -128,19 +134,17 @@ var transformClass = function (startId, endId) {
     horizontal = endH - startH
     if (vertical !== 0 && horizontal !== 0) {
         log('不能飞啊？代码出错了     ', startId, endId)
-    } else if (horizontal > 0) {
+    } else if (horizontal >= 0) {
         result = `rightMove-${horizontal}`
-    } else if (horizontal < 0) {
+    } else if (horizontal <= 0) {
         horizontal = -horizontal
         result = `leftMove-${horizontal}`
-    } else if (vertical > 0) {
+    } else if (vertical >= 0) {
         log('竖直方向还没写        ', startId, endId)
-    } else if (vertical < 0) {
+    } else if (vertical <= 0) {
         log('竖直方向还没写        ', startId, endId)
     } else {
         // TODO
-        horizontal = -horizontal
-        result = `leftMove-${horizontal}`
     }
     return result
 }
@@ -150,6 +154,30 @@ var cellDict = function (startItem, cells) {
     let x = id.split('-')[1] - 1
     let y = id.split('-')[2] - 1
     return cells[x][y]
+}
+
+var CleaningElements = function (oldCells) {
+    //  获得动画结束后的元素位置
+    //  这个函数有bug，当元素没有动的时候会被清理掉
+    let list = new NumberArray()
+    let newCells = extractedList(list.numbers)
+    let exclude = targetDict.exclude
+    for (let i = 0; i < oldCells.length; i++) {
+        let cell = oldCells[i]
+        for (let j = 0; j < cell.length; j++) {
+            let oldItem = oldCells[i][j]
+            let newItem = newCells[i][j]
+            let id = oldItem.id
+            if (oldItem.text === newItem.text && !exclude.includes(id)) {
+                let cleanItem = document.querySelector(`#${id}`)
+                numberInit(cleanItem)
+            } else {
+                continue
+            }
+        }
+    }
+    targetDict.count = 0
+    targetDict.exclude = []
 }
 
 var transformEnd = function (startItem, endItem, cells, dictList) {
@@ -165,7 +193,7 @@ var transformEnd = function (startItem, endItem, cells, dictList) {
             targetDict.count = targetDict.count + 1
             count++
             if (targetDict.count === dictList.length) {
-                CleaningElements()
+                CleaningElements(cells)
             }
         }
     })
@@ -178,40 +206,13 @@ var extractedList = function (list) {
             let dict = {
                 class: l.className,
                 text: l.textContent,
+                id: l.getAttribute('id'),
             }
             return dict
         })
         result.push(cell)
     })
     return result
-}
-
-var CleaningElements = function () {
-    //  获得动画结束后的元素位置
-    //  这个函数有bug，当元素没有动的时候会被清理掉
-    let list = new NumberArray()
-    let exclude = targetDict.exclude
-    Array.from(list).forEach(cells => {
-        cells.forEach(l => {
-            let id = l.getAttribute('id')
-            if (exclude.includes(id)) {
-                log('exclude        ', id)
-            } else {
-                numberInit(l)
-            }
-        })
-    })
-    targetDict.count = 0
-    targetDict.exclude = []
-}
-
-var move = function (numbers, cells) {
-    let dictList = moveDictList(numbers)
-    dictList = dictList.reverse()
-    for (let i = 0; i < dictList.length; i++) {
-        let dict = dictList[i]
-        transform(dict, cells, dictList)
-    }
 }
 
 var transform = function (dict, cells, dictList) {
@@ -228,6 +229,17 @@ var transform = function (dict, cells, dictList) {
 
     startItem.classList.add(className)
     transformEnd(startItem, endItem, cells, dictList)
+}
+
+var move = function (numbers, cells) {
+    let dictList = moveDictList(numbers)
+    dictList = dictList.reverse()
+    for (let i = 0; i < dictList.length; i++) {
+        let dict = dictList[i]
+        if (dictList.length !== 0) {
+            transform(dict, cells, dictList)
+        }
+    }
 }
 
 var left = function () {
