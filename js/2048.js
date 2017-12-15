@@ -12,7 +12,10 @@ const log = function () {
 
 var targetDict = {
     count: 0,
-    exclude: []
+    exclude: [],
+    enlargeCount: 0,
+    type: '',
+    transCount: 0,
 }
 
 var NumberArray = function () {
@@ -41,13 +44,19 @@ NumberArray.prototype.verticalNumbersInit = function () {
     // 4*4的遍历，同一行的下标是[i][i]
     let numbers = this.numbers
     let result = []
-    numbers.forEach(lines => {
-
-    })
+    for (let y = 0; y < 4; y++) {
+        let cell = []
+        for (let x = 0; x < 4; x++) {
+            let item = numbers[x][y]
+            cell.push(item)
+        }
+        result.push(cell)
+    }
+    return result
 }
 
-NumberArray.prototype.lineReversed = function () {
-    return this.numbers.map((l) => {
+NumberArray.prototype.lineReversed = function (numbers) {
+    return numbers.map((l) => {
         let nl = Array.from(l)
         return nl.reverse()
     })
@@ -55,13 +64,21 @@ NumberArray.prototype.lineReversed = function () {
 
 NumberArray.prototype.init = function () {
     this.numbersInit()
-    this.lineFlip = this.lineReversed()
+    this.lineFlip = this.lineReversed(this.numbers)
+    this.verticalNumbers = this.verticalNumbersInit()
+    this.verticalFlip = this.lineReversed(this.verticalNumbers)
 }
 
 var moveDict = function (index, lineNumbers) {
     let result = {}
     let count = 0
-    if (lineNumbers[index].textContent !== '') {
+    let text = lineNumbers[index].textContent
+    if (text !== '') {
+        let currentNumber = index + 1
+        if (currentNumber < lineNumbers.length && text === lineNumbers[currentNumber].textContent) {
+            count++
+            result.isEnlarge = true
+        }
         for (let i = index + 1; i < lineNumbers.length; i++) {
             let nextItemText = lineNumbers[i].textContent
             if (nextItemText === '') {
@@ -70,10 +87,9 @@ var moveDict = function (index, lineNumbers) {
         }
         let startId = lineNumbers[index].getAttribute('id')
         let endId = lineNumbers[index + count].getAttribute('id')
-        result = {
-            'start': startId,
-            'end': endId,
-        }
+
+        result.start = startId
+        result.end = endId
     } else {}
     return result
 }
@@ -89,9 +105,7 @@ var moveDictList = function (list) {
     })
     dictList = dictList.filter(((d) => {
         if (Object.keys(d).length > 0) {
-            if (d['start'] === d['end']) {
-                targetDict.exclude.push(d['start'])
-            }
+            targetDict.exclude.push(d['end'])
             return true
         } else {
             return false
@@ -105,19 +119,23 @@ var numberInit = function (item) {
     item.textContent = ''
 }
 
-var setNumber = function (item, colorClass, text) {
+var setNumber = function (item, text) {
+
     if (text === '') {
         return
     } else {
+        let colorClass = `p${text}`
         numberInit(item)
         item.classList.add(colorClass)
         item.textContent = text
     }
 }
 
-var transformClass = function (startId, endId) {
-    let vertical = 0 // 竖直
-    let horizontal = 0 // 水平
+var coordinate = function (startId, endId) {
+    let result = {
+        vertical: 0, // 竖直
+        horizontal: 0, // 水平
+    }
 
     let startV = startId.split('-')[1]
     let startH = startId.split('-')[2]
@@ -125,21 +143,29 @@ var transformClass = function (startId, endId) {
     let endV = endId.split('-')[1]
     let endH = endId.split('-')[2]
 
+    result.vertical = endV - startV
+    result.horizontal = endH - startH
+    return result
+}
+
+var transformClass = function (startId, endId) {
+    let coo = coordinate(startId, endId)
+    let vertical = coo.vertical
+    let horizontal = coo.horizontal
     let result = ''
 
-    vertical = endV - startV
-    horizontal = endH - startH
     if (vertical !== 0 && horizontal !== 0) {
         log('不能飞啊？代码出错了     ', startId, endId)
-    } else if (horizontal >= 0) {
+    } else if (horizontal >= 0 && vertical == 0) {
         result = `rightMove-${horizontal}`
-    } else if (horizontal <= 0) {
+    } else if (horizontal <= 0 && vertical == 0) {
         horizontal = -horizontal
         result = `leftMove-${horizontal}`
     } else if (vertical >= 0) {
-        log('竖直方向还没写        ', startId, endId)
+        result = `downMove-${vertical}`
     } else if (vertical <= 0) {
-        log('竖直方向还没写        ', startId, endId)
+        vertical = -vertical
+        result = `topMove-${vertical}`
     } else {
         // TODO
     }
@@ -174,24 +200,88 @@ var CleaningElements = function (oldCells) {
         }
     }
     targetDict.count = 0
+    targetDict.transCount = 0
     targetDict.exclude = []
+    log('不删除的元素     ', exclude)
+}
+
+var enlargeEnd = function (item, len, cells) {
+    let count = 0
+    log('为什么不动？     ', item)
+    item.addEventListener('transitionend', function (event) {
+        if (count > 0) {
+            return
+        } else {
+            count++
+            targetDict.enlargeCount = targetDict.enlargeCount + 1
+            item.classList.remove('enlarge')
+            if (targetDict.enlargeCount === len) {
+                targetDict.enlargeCount = 0
+            }
+        }
+    })
+}
+
+var cleanNumber = function (id) {
+    let item = document.querySelector(`#${id}`)
+    let parent = item.parentElement
+    let text = item.textContent
+
+    item.remove()
+    let t = `<number id="${id}">${text}</number>`
+    parent.insertAdjacentHTML('beforeend', t)
+}
+
+var enlargeTransform = function (dictList, cells) {
+    let enlargeList = dictList.filter((function (d) {
+        return d.isEnlarge === true
+    }))
+    let len = enlargeList.length
+    for (let i = 0; i < len; i++) {
+        let id = enlargeList[i].end
+        cleanNumber(id)
+        let item = document.querySelector(`#${id}`)
+        let text = item.textContent * 2
+
+        setNumber(item, text)
+        enlargeEnd(item, len, cells)
+        item.classList.add('enlarge')
+    }
+}
+
+var repeatKeyDown = function () {
+    let type = targetDict.type
+    if (type === 'right') {
+        right()
+    } else if (type === 'left') {
+        left()
+    } else if (type === 'top') {
+        topMove()
+    } else if (type === 'down') {
+        down()
+    }
+}
+
+var moveCallBack = function (startItem, endItem, cells, dictList) {
+    let targetText = cellDict(startItem, cells).text
+    setNumber(endItem, targetText)
+    targetDict.count = targetDict.count + 1
+    if (targetDict.count === dictList.length) {
+        CleaningElements(cells)
+        enlargeTransform(dictList, cells)
+    }
 }
 
 var transformEnd = function (startItem, endItem, cells, dictList) {
     //  给目标元素附上类和值
     //  当所有动画执行结束调用清空函数
     let count = 0
-    startItem.addEventListener('transitionend', (event) => {
+    startItem.addEventListener('transitionend', function (event) {
         if (count > 0) {
             return
         } else {
-            let targetText = cellDict(startItem, cells).text
-            setNumber(endItem, `p${targetText}`, targetText)
-            targetDict.count = targetDict.count + 1
             count++
-            if (targetDict.count === dictList.length) {
-                CleaningElements(cells)
-            }
+            moveCallBack(startItem, endItem, cells, dictList)
         }
     })
 }
@@ -215,16 +305,17 @@ var extractedList = function (list) {
 var transform = function (dict, cells, dictList) {
     //  计算给初始元素附上的动画
     //  动画结束后，调用动画结束函数
-    let startId = dict['start']
     let endId = dict['end']
+    let startId = dict['start']
 
-    let startItem = document.querySelector(`#${startId}`)
     let endItem = document.querySelector(`#${endId}`)
+    let startItem = document.querySelector(`#${startId}`)
 
-    let className = transformClass(startId, endId)
     let targetText = startItem.textContent
+    let className = transformClass(startId, endId)
 
     startItem.classList.add(className)
+
     transformEnd(startItem, endItem, cells, dictList)
 }
 
@@ -257,23 +348,46 @@ var right = function () {
     move(list.numbers, cells)
 }
 
+var topMove = function () {
+    let list = new NumberArray()
+    let numbers = list.verticalFlip
+    let cells = extractedList(list.numbers)
+    move(numbers, cells)
+}
+var down = function () {
+    let list = new NumberArray()
+    let numbers = list.verticalNumbers
+    let cells = extractedList(list.numbers)
+    move(numbers, cells)
+}
+
 var keyboardDown = function () {
     window.addEventListener('keydown', (event) => {
+        if (targetDict.transCount !== 0 || targetDict.enlargeCount !== 0) {
+            log('上一步还没完结        ', targetDict)
+            return
+        }
         const e = event
+        targetDict.transCount = targetDict.transCount + 1
         if (e.keyCode === 39) {
             log('right      ')
+            targetDict.type = 'right'
             right()
         } else if (e.keyCode === 37) {
             log('left      ')
+            targetDict.type = 'left'
             left()
         } else if (e.keyCode === 38) {
             log('top      ')
-            top()
+            targetDict.type = 'top'
+            topMove()
         } else if (e.keyCode === 40) {
             log('down      ')
+            targetDict.type = 'down'
             down()
         } else {
-            log('按了鬼畜键？     ')
+            log('按了鬼畜键？     ', e.keyCode)
+            targetDict.count = targetDict.transCount - 1
         }
     })
 }
