@@ -69,28 +69,76 @@ NumberArray.prototype.init = function () {
     this.verticalFlip = this.lineReversed(this.verticalNumbers)
 }
 
-var moveDict = function (index, lineNumbers) {
-    let result = {}
-    let count = 0
-    let text = lineNumbers[index].textContent
-    if (text !== '') {
-        let currentNumber = index + 1
-        if (currentNumber < lineNumbers.length && text === lineNumbers[currentNumber].textContent) {
-            count++
-            result.isEnlarge = true
+var isEqual = function (lines) {
+    let result = false
+    let len = lines.length
+    if (len > 2) {
+        if (lines[0] === lines[1] == lines[2]) {
+            result.special = 1
         }
-        for (let i = index + 1; i < lineNumbers.length; i++) {
-            let nextItemText = lineNumbers[i].textContent
-            if (nextItemText === '') {
-                count++
-            }
-        }
-        let startId = lineNumbers[index].getAttribute('id')
-        let endId = lineNumbers[index + count].getAttribute('id')
+    } else if (lines[0] === lines[1] && len > 1) {
+        result = true
+    }
+    return result
+}
 
-        result.start = startId
-        result.end = endId
-    } else {}
+var squeezeToRight = function (index, lineNumbers) {
+    let result = []
+    for (let i = index; i < lineNumbers.length; i++) {
+        let text = lineNumbers[i].textContent
+        if (text !== '') {
+            result.push(text)
+        }
+    }
+    return result
+}
+
+var isEnlarge = function (index, lineNumbers) {
+    let newLine = squeezeToRight(index, lineNumbers)
+    let result = false
+    result = isEqual(newLine)
+    return result
+}
+
+var calculateSteps = function (index, enlarge, lines) {
+    let count = 0
+    let len = lines.length
+    if (enlarge) {
+        count++
+    }
+    for (let i = index + 1; i < len; i++) {
+        let nextText = lines[i].textContent
+        if (nextText === '') {
+            count++
+        }
+    }
+    return count
+}
+
+var setDict = function (lines, index, count, enlarge) {
+    let startId = lines[index].getAttribute('id')
+    let endId = lines[index + count].getAttribute('id')
+
+    let result = {
+        end: endId,
+        start: startId,
+        isEnlarge: enlarge,
+    }
+    return result
+}
+
+var moveDict = function (index, lineNumbers) {
+    // 把元素全部推到最右边
+    // 从左往右判断当前元素的下一个元素是否相等，相等则合并
+    let result = {},
+        len = lineNumbers.length,
+        text = lineNumbers[index].textContent,
+        enlarge = isEnlarge(index, lineNumbers)
+
+    if (text !== '') {
+        let count = calculateSteps(index, enlarge, lineNumbers)
+        result = setDict(lineNumbers, index, count, enlarge)
+    }
     return result
 }
 
@@ -120,7 +168,6 @@ var numberInit = function (item) {
 }
 
 var setNumber = function (item, text) {
-
     if (text === '') {
         return
     } else {
@@ -354,6 +401,7 @@ var topMove = function () {
     let cells = extractedList(list.numbers)
     move(numbers, cells)
 }
+
 var down = function () {
     let list = new NumberArray()
     let numbers = list.verticalNumbers
@@ -387,7 +435,7 @@ var keyboardDown = function () {
             down()
         } else {
             log('按了鬼畜键？     ', e.keyCode)
-            targetDict.count = targetDict.transCount - 1
+            targetDict.transCount = targetDict.transCount - 1
         }
     })
 }
