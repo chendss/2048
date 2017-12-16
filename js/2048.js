@@ -70,14 +70,19 @@ NumberArray.prototype.init = function () {
 }
 
 var isEqual = function (lines) {
-    let result = false
+    let result = {
+        equal: false,
+        special: 0
+    }
     let len = lines.length
     if (len > 2) {
-        if (lines[0] === lines[1] == lines[2]) {
+        if (lines[0] === lines[1] && lines[0] == lines[2]) {
             result.special = 1
+        } else if (lines[0] === lines[1] && lines[0] !== lines[2]) {
+            result.equal = true
         }
-    } else if (lines[0] === lines[1] && len > 1) {
-        result = true
+    } else if (lines[0] === lines[1]) {
+        result.equal = true
     }
     return result
 }
@@ -103,8 +108,10 @@ var isEnlarge = function (index, lineNumbers) {
 var calculateSteps = function (index, enlarge, lines) {
     let count = 0
     let len = lines.length
-    if (enlarge) {
+    if (enlarge.equal) {
         count++
+    } else {
+        count = enlarge.special + count
     }
     for (let i = index + 1; i < len; i++) {
         let nextText = lines[i].textContent
@@ -122,7 +129,7 @@ var setDict = function (lines, index, count, enlarge) {
     let result = {
         end: endId,
         start: startId,
-        isEnlarge: enlarge,
+        isEnlarge: enlarge.equal,
     }
     return result
 }
