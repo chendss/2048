@@ -80,6 +80,8 @@ var isEqual = function (lines) {
             result.special = 1
         } else if (lines[0] === lines[1] && lines[0] !== lines[2]) {
             result.equal = true
+        } else if (lines[0] !== lines[1] && lines[1] === lines[2]) {
+            result.special = 1
         }
     } else if (lines[0] === lines[1]) {
         result.equal = true
