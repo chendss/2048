@@ -312,7 +312,7 @@ var isEmpty = function (item) {
     return result
 }
 
-var randomCallBack = function () {
+var randomCallBack = function (n = '2') {
     let list = Array.from(document.querySelectorAll('number'))
     let emptyNumbers = list.filter(isEmpty)
     let maxIndex = emptyNumbers.length
@@ -321,7 +321,7 @@ var randomCallBack = function () {
     }
     let r = Math.floor(maxIndex * Math.random())
     let item = emptyNumbers[r]
-    setNumber(item, '2')
+    setNumber(item, n)
 }
 
 var isMove = function (dictList) {
@@ -338,7 +338,7 @@ var isMove = function (dictList) {
 }
 
 var randomGenerationNumber = function (callBack, dictList) {
-    let timeOut = 90
+    let timeOut = 120
     let isM = isMove(dictList)
     if (true) {
         setTimeout(() => {
@@ -560,9 +560,31 @@ var keyboardDown = function () {
     })
 }
 
-const _main = function () {
-    keyboardDown()
+var cleanAllNumber = function () {
+    let numbers = document.querySelectorAll('number')
+    numbers.forEach(element => {
+        numberInit(element)
+    })
+}
 
+var init = function () {
+    cleanAllNumber()
+    for (let i = 1; i <= 16; i = 2 * i) {
+        randomCallBack(i * 2)
+    }
+}
+
+var again = function () {
+    let b = document.querySelector('#id-button-again')
+    b.addEventListener('click', (event) => {
+        init()
+    })
+}
+
+const _main = function () {
+    again()
+    keyboardDown()
+    init()
 }
 
 _main()
