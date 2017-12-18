@@ -4,7 +4,7 @@ reord {
 
 body {
     text-align: center;
-    background: white;
+    background: #faf8ef;
 }
 
 line {
@@ -17,8 +17,8 @@ line {
 cell {
     margin: 0.5px;
     display: inline-block;
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
     line-height: 90px;
     text-align: center;
     vertical-align: top;
@@ -42,14 +42,14 @@ number {
     width: 100%;
     height: 100%;
     display: inline-block;
-    line-height: 90px;
+    line-height: 110px;
     position: relative;
     margin: 0px;
 }
 
 .rightMove-0 {
     transform: translate(0px, 0px);
-    transition: 0.03s;
+    transition: 0.003s;
     z-index: 2;
 }
 
@@ -73,7 +73,7 @@ number {
 
 .leftMove-0 {
     transform: translate(0px, 0px);
-    transition: 0.03s;
+    transition: 0.003s;
     z-index: 2;
 }
 .leftMove-1 {
@@ -96,7 +96,7 @@ number {
 
 .downMove-0 {
     transform: translate(0px, 0px);
-    transition: 0.03s;
+    transition: 0.003s;
     z-index: 2;
 }
 .downMove-1 {
@@ -116,7 +116,7 @@ number {
 }
 .topMove-0 {
     transform: translate(0px, 0px);
-    transition: 0.03s;
+    transition: 0.003s;
     z-index: 2;
 }
 .topMove-1 {
@@ -136,7 +136,7 @@ number {
 }
 .enlarge {
     transform: scale(1.2, 1.2);
-    transition: 0.1s;
+    transition: 0.3s;
 }
 
 .p2 {
