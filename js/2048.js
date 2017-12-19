@@ -1,6 +1,6 @@
 const log = function () {
     let args = [...arguments]
-    args.forEach(ele => {
+    args = args.map(ele => {
         if (typeof ele === 'string' && !ele.includes('`')) {
             return `(${ele})`
         } else {
