@@ -201,7 +201,7 @@ number {
     line-height: 2.4em;
 }
 
-@media screen and (max-device-width: 400px) {
+@media screen and (max-device-width: 420px) {
     cell {
         width: 4.5em;
         height: 4.5em;
