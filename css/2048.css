@@ -14,6 +14,8 @@ line {
     position: relative;
 }
 
+
+
 cell {
     margin: 0.5px;
     display: inline-block;
@@ -27,6 +29,8 @@ cell {
     font-weight: bold;
     position: relative;
 }
+
+
 
 checkerboard {
     opacity: 0.8;
@@ -45,6 +49,8 @@ number {
     position: relative;
     margin: 0px;
 }
+
+
 
 .rightMove-0 {
     transform: translate(0px, 0px);
@@ -193,4 +199,18 @@ number {
     background: #edc22e;
     font-size: 3em;
     line-height: 2.4em;
+}
+
+@media screen and (max-device-width: 400px) {
+    cell {
+        width: 4.5em;
+        height: 4.5em;
+    }
+
+    number{
+        font-size: 2.5em;
+    }
+    .p1024{
+        font-size: 2em;
+    }
 }
