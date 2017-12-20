@@ -564,7 +564,7 @@ var again = function () {
 const _main = function () {
     again()
     keyboardDown()
-    init()
+    // init()
 }
 
 _main()

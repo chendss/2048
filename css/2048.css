@@ -17,14 +17,14 @@ line {
 cell {
     margin: 0.5px;
     display: inline-block;
-    width: 110px;
-    height: 110px;
-    line-height: 90px;
+    width: 135px;
+    height: 135px;
+    line-height: 135px;
     text-align: center;
     vertical-align: top;
     background: rgba(238, 228, 218, 0.35);
     border-radius: 12%;
-    font-size: 55px;
+    font-size: 60px;
     font-family: sans-serif;
     font-weight: bold;
     position: relative;
@@ -42,7 +42,7 @@ number {
     width: 100%;
     height: 100%;
     display: inline-block;
-    line-height: 110px;
+    line-height: 135px;
     position: relative;
     margin: 0px;
 }
