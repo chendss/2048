@@ -11,7 +11,7 @@ const log = function () {
 }
 
 var targetDict = {
-    count: 0,
+    moveCount: 0,
     exclude: [],
     enlargeCount: 0,
     transCount: 0,
@@ -19,7 +19,7 @@ var targetDict = {
 
 var cleanTarget = function () {
     targetDict.exclude = []
-    targetDict.count = 0
+    targetDict.moveCount = 0
     targetDict.enlargeCount = 0
     targetDict.transCount = 0
 }
@@ -48,8 +48,8 @@ NumberArray.prototype.numbersInit = function () {
 NumberArray.prototype.verticalNumbersInit = function () {
     // 将numbers的数据每一列存在一个新的数组
     // 4*4的遍历，同一行的下标是[i][i]
-    let numbers = this.numbers
-    let result = []
+    let numbers = this.numbers,
+        result = []
     for (let y = 0; y < 4; y++) {
         let cell = []
         for (let x = 0; x < 4; x++) {
@@ -86,76 +86,64 @@ var listEqual = function (list) {
     return result
 }
 
-var judgeFour = function (lines) {
-    let result = {
-        equal: false,
-        special: 0
-    }
+var judgeFour = function (lines, dict) {
     let len = lines.length
     if (listEqual(lines)) {
         // 所有数相等
-        result.equal = true
-        result.special = 1
+        dict.equal = true
+        dict.special = 1
     } else if (listEqual(lines.slice(0, len - 1))) {
         // 前3个数相等
-        result.special = 1
+        dict.special = 1
     } else if (lines[0] === lines[1] && lines[1] !== lines[2]) {
         // 保证前两个数相等,中间两个数不等
         if (lines[2] === lines[3]) {
             // 后两个数相等
-            result.equal = true
-            result.special = 1
+            dict.equal = true
+            dict.special = 1
         } else {
-            result.equal = true
+            dict.equal = true
         }
     } else if (lines[1] === lines[2] || lines[2] === lines[3]) {
         // 只有一队相等的数
-        result.special = 1
+        dict.special = 1
     }
-    return result
+    return dict
 }
 
-var judgeThree = function (lines, base) {
-    let result = {
-        equal: false,
-        special: 0
-    }
+var judgeThree = function (lines, base, dict) {
     let len = lines.length
     if (listEqual(lines)) {
         // 3个数相等
-        result.special = 1
+        dict.special = 1
     } else if (lines[0] === lines[1]) {
         // 前俩个数相等
-        result.equal = true
+        dict.equal = true
     } else if (lines[1] === lines[2]) {
-        result.special = 1
+        dict.special = 1
     }
-    return result
+    return dict
 }
 
-var judgeTwo = function (lines, base) {
-    let result = {
-        equal: false,
-        special: 0
-    }
+var judgeTwo = function (lines, base, dict) {
     if (lines[0] === lines[1]) {
-        result.equal = true
+        dict.equal = true
     }
-    return result
+    return dict
 }
 
 var isEqual = function (lines, base) {
     let len = lines.length
     let result = {
+        special: 0,
         equal: false,
-        special: 0
     }
     if (len === 4) {
-        result = judgeFour(lines)
+        result = judgeFour(lines, result)
     } else if (len === 3) {
-        result = judgeThree(lines, base)
+        result = judgeThree(lines, base, result)
     } else if (len === 2) {
-        result = judgeTwo(lines, base)
+        result = judgeTwo(lines, base, result)
     }
     return result
 }
@@ -233,7 +221,6 @@ var moveDictList = function (list) {
     let dictList = []
     list.forEach(lineNumbers => {
         for (let i = 0; i < lineNumbers.length; i++) {
-            let key = lineNumbers[i].getAttribute('id')
             let dict = moveDict(i, lineNumbers)
             dictList.push(dict)
         }
@@ -266,26 +253,20 @@ var setNumber = function (item, text) {
 }
 
 var coordinate = function (startId, endId) {
-    let result = {
-        vertical: 0, // 竖直
-        horizontal: 0, // 水平
-    }
+    let result = {}
 
-    let startV = startId.split('-')[1]
-    let startH = startId.split('-')[2]
+    let [startV, startH] = [startId.split('-')[1], startId.split('-')[2]]
 
-    let endV = endId.split('-')[1]
-    let endH = endId.split('-')[2]
+    let [endV, endH] = [endId.split('-')[1], endId.split('-')[2]]
 
-    result.vertical = endV - startV
-    result.horizontal = endH - startH
+    result.vertical = endV - startV // 竖直
+    result.horizontal = endH - startH // 水平
     return result
 }
 
 var transformClass = function (startId, endId) {
     let coo = coordinate(startId, endId)
-    let vertical = coo.vertical
-    let horizontal = coo.horizontal
+    let [vertical, horizontal] = [coo.vertical, coo.horizontal]
     let result = ''
 
     if (horizontal >= 0 && vertical == 0) {
@@ -304,17 +285,11 @@ var transformClass = function (startId, endId) {
     return result
 }
 
-var isEmpty = function (item) {
-    let result = true
-    if (item.textContent !== '') {
-        result = false
-    }
-    return result
-}
-
 var randomCallBack = function (n = '2') {
     let list = Array.from(document.querySelectorAll('number'))
-    let emptyNumbers = list.filter(isEmpty)
+    let emptyNumbers = list.filter(function (item) {
+        return item.textContent === ''
+    })
     let maxIndex = emptyNumbers.length
     if (maxIndex === 0) {
         return
@@ -326,19 +301,16 @@ var randomCallBack = function (n = '2') {
 
 var isMove = function (dictList) {
     let steps = dictList.map((d) => {
-        let startId = d['start']
-        let endId = d['end']
-        return coordinate(startId, endId)
+        return coordinate(d['start'], d['end'])
     })
     let sumSteps = steps.filter(((s) => {
         return s.vertical + s.horizontal === 0
     }))
-    let result = (sumSteps.length === 0)
-    return result
+    return (sumSteps.length === 0)
 }
 
 var randomGenerationNumber = function (callBack, dictList) {
-    let timeOut = 120
+    let timeOut = 130
     let isM = isMove(dictList)
     if (true) {
         setTimeout(() => {
@@ -348,7 +320,7 @@ var randomGenerationNumber = function (callBack, dictList) {
     } else {
         setTimeout(() => {
             cleanTarget()
-        }, timeOut + 30);
+        }, timeOut);
         return
     }
 }
@@ -360,26 +332,33 @@ var cellDict = function (startItem, cells) {
     return cells[x][y]
 }
 
-var CleaningElements = function (oldCells) {
-    //  获得动画结束后的元素位置
-    let list = new NumberArray()
-    let newCells = extractedList(list.numbers)
+var cellInit = function (i, cell, oldCells, newCells) {
     let exclude = targetDict.exclude
-    for (let i = 0; i < oldCells.length; i++) {
-        let cell = oldCells[i]
-        for (let j = 0; j < cell.length; j++) {
-            let oldItem = oldCells[i][j]
-            let newItem = newCells[i][j]
-            let id = oldItem.id
-            if (oldItem.text === newItem.text && !exclude.includes(id)) {
-                let cleanItem = document.querySelector(`#${id}`)
-                numberInit(cleanItem)
-            } else {
-                continue
-            }
+    for (let j = 0; j < cell.length; j++) {
+        let oldItem = oldCells[i][j]
+        let newItem = newCells[i][j]
+        let id = oldItem.id
+        if (oldItem.text === newItem.text && !exclude.includes(id)) {
+            let cleanItem = document.querySelector(`#${id}`)
+            numberInit(cleanItem)
+        } else {
+            continue
         }
     }
-    log('不删除的元素     ', exclude)
+}
+
+var CleaningElements = function (oldCells) {
+    //  获得动画结束后的元素位置
+    //  判断旧元素坐标与新元素坐标的或者在排除列表里
+    //  如果有差异并且不在排除列表里则初始化此元素
+    let list = new NumberArray()
+    let newCells = extractedList(list.numbers)
+    for (let i = 0; i < oldCells.length; i++) {
+        let cell = oldCells[i]
+        cellInit(i, cell, oldCells, newCells)
+    }
+    log('不删除的元素     ', targetDict.exclude)
+
 }
 
 var enlargeCallBack = function (list) {
@@ -396,9 +375,9 @@ var enlargeCallBack = function (list) {
     }
 }
 
-var enlargeEnd = function (callBack, list) {
+var enlargeEnd = function (enlargeBack, list) {
     setTimeout(() => {
-        callBack(list)
+        enlargeBack(list)
     }, 100);
 }
 
@@ -413,9 +392,10 @@ var cleanNumber = function (id) {
 }
 
 var itemAddEnlarge = function (id) {
-    cleanNumber(id)
     let item = document.querySelector(`#${id}`)
     let text = item.textContent * 2
+    // cleanNumber(id)
+    numberInit(item)
 
     setNumber(item, text)
     item.classList.add('enlarge')
@@ -439,8 +419,8 @@ var enlargeTransform = function (dictList, cells) {
 var moveCallBack = function (startItem, endItem, cells, dictList) {
     let targetText = cellDict(startItem, cells).text
     setNumber(endItem, targetText)
-    targetDict.count = targetDict.count + 1
-    if (targetDict.count === dictList.length) {
+    targetDict.moveCount = targetDict.moveCount + 1
+    if (targetDict.moveCount === dictList.length) {
         CleaningElements(cells)
         enlargeTransform(dictList, cells)
     }
@@ -569,7 +549,7 @@ var cleanAllNumber = function () {
 
 var init = function () {
     cleanAllNumber()
-    for (let i = 1; i <= 16; i = 2 * i) {
+    for (let i = 1; i <= 2; i = 2 * i) {
         randomCallBack(i * 2)
     }
 }
