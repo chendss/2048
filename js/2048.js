@@ -1,8 +1,9 @@
 const log = function () {
     let args = [...arguments]
     args = args.map(ele => {
-        if (typeof ele === 'string' && !ele.includes('`')) {
-            return `(${ele})`
+        let type_ = typeof ele
+        if (type_ === 'string' && !ele.includes('`')) {
+            return `(${ele}) 类型：${type_}`
         } else {
             return ele
         }
@@ -540,6 +541,70 @@ var keyboardDown = function () {
     })
 }
 
+var mobileTouch = function (type) {
+
+}
+
+var touchMove = function (direction) {
+    log('touch move`', direction)
+    if (direction === 'no move') {
+        return
+    } else if (direction === 'down') {
+        down()
+    } else if (direction === 'top') {
+        topMove()
+    } else if (direction === 'right') {
+        right()
+    } else if (direction === 'left') {
+        left()
+    }
+}
+
+var touchDirection = function (vertical, distanceX, horizontal, distanceY) {
+    let result = vertical
+    if (isNaN(distanceY) || isNaN(distanceX)) {
+        result = 'no move'
+    } else if (distanceX > distanceY) {
+        result = vertical
+    } else if (distanceX < distanceY) {
+        result = horizontal
+    } else {
+        log('等死吧`', distanceX, distanceY)
+    }
+    return result
+}
+
+var touchBindEvent = function () {
+    let startY, endY, startX, endX
+    let startTouchScroll = function (event) {
+        let touch = event.touches[0]
+        startX = touch.pageX
+        startY = touch.pageY
+    }
+
+    let moveTouchScroll = function (event) {
+        let touch = event.touches[0]
+        endX = touch.pageX
+        endY = touch.pageY
+    }
+
+    let endTouchScroll = function (event) {
+        //判断移动的点,1为手指向下滑动,-1为手指向上滑动
+        let vertical = (endY - startY) > 0 ? 'down' : 'top'
+        //判断移动的点,1为手指向右滑动,-1为手指向左滑动
+        let horizontal = (endX - startX) > 0 ? 'right' : 'left'
+        //计算滑动距离
+        let distanceX = Math.abs(endY - startY)
+        let distanceY = Math.abs(endX - startY)
+        let direction = touchDirection(vertical, distanceX, horizontal, distanceY)
+        touchMove(direction)
+    }
+
+    document.addEventListener("touchstart", startTouchScroll, false)
+    document.addEventListener("touchmove", moveTouchScroll, false)
+    document.addEventListener("touchend", endTouchScroll, false)
+}
+
 var cleanAllNumber = function () {
     let numbers = document.querySelectorAll('number')
     numbers.forEach(element => {
@@ -564,7 +629,8 @@ var again = function () {
 const _main = function () {
     again()
     keyboardDown()
-    // init()
+    touchBindEvent()
+    init()
 }
 
 _main()
