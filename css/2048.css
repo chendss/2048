@@ -17,14 +17,12 @@ line {
 cell {
     margin: 0.5px;
     display: inline-block;
-    width: 135px;
-    height: 135px;
-    line-height: 135px;
+    width: 7em;
+    height: 7em;
     text-align: center;
     vertical-align: top;
     background: rgba(238, 228, 218, 0.35);
     border-radius: 12%;
-    font-size: 60px;
     font-family: sans-serif;
     font-weight: bold;
     position: relative;
@@ -39,10 +37,11 @@ checkerboard {
 
 number {
     border-radius: 12%;
+    font-size: 3.5em;
     width: 100%;
     height: 100%;
     display: inline-block;
-    line-height: 135px;
+    line-height: 2em;
     position: relative;
     margin: 0px;
 }
@@ -76,6 +75,7 @@ number {
     transition: 0.003s;
     z-index: 2;
 }
+
 .leftMove-1 {
     transform: translate(-95px, 0px);
     transition: 0.03s;
@@ -99,41 +99,49 @@ number {
     transition: 0.003s;
     z-index: 2;
 }
+
 .downMove-1 {
     transform: translate(0px, 105px);
     transition: 0.03s;
     z-index: 2;
 }
+
 .downMove-2 {
     transform: translate(0px, 200px);
     transition: 0.03s;
     z-index: 2;
 }
+
 .downMove-3 {
     transform: translate(0px, 303px);
     transition: 0.03s;
     z-index: 2;
 }
+
 .topMove-0 {
     transform: translate(0px, 0px);
     transition: 0.003s;
     z-index: 2;
 }
+
 .topMove-1 {
     transform: translate(0px, -105px);
     transition: 0.03s;
     z-index: 2;
 }
+
 .topMove-2 {
     transform: translate(0px, -200px);
     transition: 0.03s;
     z-index: 2;
 }
+
 .topMove-3 {
     transform: translate(0px, -302px);
     transition: 0.03s;
     z-index: 2;
 }
+
 .enlarge {
     transform: scale(1.2, 1.2);
     transition: 0.15s;
@@ -177,8 +185,12 @@ number {
 
 .p1024 {
     background: #edc53f;
+    font-size: 3em;
+    line-height: 2.5em;
 }
 
 .p2048 {
     background: #edc22e;
+    font-size: 3em;
+    line-height: 2.4em;
 }
