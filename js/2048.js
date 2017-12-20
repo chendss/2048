@@ -541,73 +541,23 @@ var keyboardDown = function () {
     })
 }
 
-var mobileTouch = function (type) {
-
-}
-
-var touchMove = function (direction) {
-    log('touch move`', direction)
-    if (direction === 'no move') {
-        return
-    } else if (direction === 'down') {
-        down()
-    } else if (direction === 'top') {
-        topMove()
-    } else if (direction === 'right') {
-        right()
-    } else if (direction === 'left') {
-        left()
-    }
-}
-
-var touchDirection = function (vertical, distanceX, horizontal, distanceY) {
-    let result = vertical
-    if (isNaN(distanceY) || isNaN(distanceX)) {
-        result = 'no move'
-    } else if (distanceX > distanceY) {
-        result = vertical
-    } else if (distanceX < distanceY) {
-        result = horizontal
-    } else {
-        log('等死吧`', distanceX, distanceY)
-    }
-    return result
-}
-
-var touchBindEvent = function () {
-    let startY, endY, startX, endX
+var mobileTouch = function () {
     let checkerboard = document.querySelector('checkerboard')
-    let startTouchScroll = function (event) {
+    checkerboard.addEventListener('touchmove', (event) => {
         event.preventDefault()
-        let touch = event.touches[0]
-        startX = touch.pageX
-        startY = touch.pageY
-    }
-
-    let moveTouchScroll = function (event) {
-        event.preventDefault()
-        let touch = event.touches[0]
-        endX = touch.pageX
-        endY = touch.pageY
-    }
-
-    let endTouchScroll = function (event) {
-        event.preventDefault()
-
-        //判断移动的点,1为手指向下滑动,-1为手指向上滑动
-        let vertical = (endY - startY) > 0 ? 'down' : 'top'
-        //判断移动的点,1为手指向右滑动,-1为手指向左滑动
-        let horizontal = (endX - startX) > 0 ? 'right' : 'left'
-        //计算滑动距离
-        let distanceX = Math.abs(endY - startY)
-        let distanceY = Math.abs(endX - startY)
-        let direction = touchDirection(vertical, distanceX, horizontal, distanceY)
-        touchMove(direction)
-    }
-
-    checkerboard.addEventListener("touchstart", startTouchScroll, false)
-    checkerboard.addEventListener("touchmove", moveTouchScroll, false)
-    checkerboard.addEventListener("touchend", endTouchScroll, false)
+    })
+    util.toucher(checkerboard)
+        .on('swipeLeft', function (event) {
+            left()
+        })
+        .on('swipeRight', function () {
+            right()
+        })
+        .on('swipeUp', function () {
+            topMove()
+        }).on('swipeDown', function () {
+            down()
+        })
 }
 
 var cleanAllNumber = function () {
@@ -626,15 +576,13 @@ var init = function () {
 
 var again = function () {
     let b = document.querySelector('#id-button-again')
-    b.addEventListener('click', (event) => {
-        init()
-    })
+    b.addEventListener('click', init)
 }
 
 const _main = function () {
     again()
     keyboardDown()
-    touchBindEvent()
+    mobileTouch()
     init()
 }
 

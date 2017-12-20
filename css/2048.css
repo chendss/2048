@@ -48,48 +48,48 @@ number {
 
 .rightMove-0 {
     transform: translate(0px, 0px);
-    transition: 0.003s;
+    transition: 0.03s;
     z-index: 2;
 }
 
 .rightMove-1 {
-    transform: translate(95px, 0px);
+    transform: translate(2.1em, 0px);
     transition: 0.03s;
     z-index: 2;
 }
 
 .rightMove-2 {
-    transform: translate(190px, 0px);
+    transform: translate(4.2em, 0px);
     transition: 0.03s;
     z-index: 2;
 }
 
 .rightMove-3 {
-    transform: translate(282px, 0px);
+    transform: translate(6.3em, 0px);
     transition: 0.03s;
     z-index: 2;
 }
 
 .leftMove-0 {
     transform: translate(0px, 0px);
-    transition: 0.003s;
+    transition: 0.03s;
     z-index: 2;
 }
 
 .leftMove-1 {
-    transform: translate(-95px, 0px);
+    transform: translate(-2.1em, 0px);
     transition: 0.03s;
     z-index: 2;
 }
 
 .leftMove-2 {
-    transform: translate(-190px, 0px);
+    transform: translate(-4.2em, 0px);
     transition: 0.03s;
     z-index: 2;
 }
 
 .leftMove-3 {
-    transform: translate(-282px, 0px);
+    transform: translate(-6.3em, 0px);
     transition: 0.03s;
     z-index: 2;
 }
@@ -101,19 +101,18 @@ number {
 }
 
 .downMove-1 {
-    transform: translate(0px, 105px);
+    transform: translate(0px, 2.2em);
     transition: 0.03s;
     z-index: 2;
 }
-
 .downMove-2 {
-    transform: translate(0px, 200px);
+    transform: translate(0px, 4.4em);
     transition: 0.03s;
     z-index: 2;
 }
 
 .downMove-3 {
-    transform: translate(0px, 303px);
+    transform: translate(0px, 6.6em);
     transition: 0.03s;
     z-index: 2;
 }
@@ -125,19 +124,19 @@ number {
 }
 
 .topMove-1 {
-    transform: translate(0px, -105px);
+    transform: translate(0px, -2.2em);
     transition: 0.03s;
     z-index: 2;
 }
 
 .topMove-2 {
-    transform: translate(0px, -200px);
+    transform: translate(0px, -4.4em);
     transition: 0.03s;
     z-index: 2;
 }
 
 .topMove-3 {
-    transform: translate(0px, -302px);
+    transform: translate(0px, -6.6em);
     transition: 0.03s;
     z-index: 2;
 }
