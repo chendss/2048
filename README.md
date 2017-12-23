@@ -5,6 +5,9 @@
   * 纯原生的javascript代码操控DOM控制元素组件
   * 大量使用es6语法使得代码更简洁
 
+## 试玩地址
+[2048](j.bjong.me:9393)
+
 ![](https://github.com/chendss/2048/blob/cyx/images/gif.gif)
 ![](https://github.com/chendss/2048/blob/cyx/images/end.png)
 ![](https://github.com/chendss/2048/blob/cyx/images/start.png)
