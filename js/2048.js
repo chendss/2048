@@ -382,20 +382,9 @@ var enlargeEnd = function (enlargeBack, list) {
     }, 100);
 }
 
-var cleanNumber = function (id) {
-    let item = document.querySelector(`#${id}`)
-    let parent = item.parentElement
-    let text = item.textContent
-
-    item.remove()
-    let t = `<number id="${id}">${text}</number>`
-    parent.insertAdjacentHTML('beforeend', t)
-}
-
 var itemAddEnlarge = function (id) {
     let item = document.querySelector(`#${id}`)
     let text = item.textContent * 2
-    // cleanNumber(id)
     numberInit(item)
 
     setNumber(item, text)
