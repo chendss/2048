@@ -1,28 +1,15 @@
-const log = function () {
-    let args = [...arguments]
-    args = args.map(ele => {
-        let type_ = typeof ele
-        if (type_ === 'string' && !ele.includes('`')) {
-            return `(${ele}) 类型：${type_}`
-        } else {
-            return ele
-        }
-    })
-    console.log(...args)
-}
-
 var targetDict = {
-    moveCount: 0,
     exclude: [],
-    enlargeCount: 0,
+    moveCount: 0,
     transCount: 0,
+    enlargeCount: 0,
 }
 
 var cleanTarget = function () {
     targetDict.exclude = []
     targetDict.moveCount = 0
-    targetDict.enlargeCount = 0
     targetDict.transCount = 0
+    targetDict.enlargeCount = 0
 }
 
 var NumberArray = function () {
@@ -163,7 +150,7 @@ var squeezeToRight = function (index, lineNumbers) {
 var isEnlarge = function (index, lineNumbers) {
     let newLine = squeezeToRight(index, lineNumbers)
     let result = false
-    let base = {}
+    let base = ''
     if (index === 0) {
         base = lineNumbers[0].textContent
     } else {
@@ -177,8 +164,7 @@ var calculateSteps = function (index, enlargeDict, lines) {
     let count = 0
     let len = lines.length
     if (enlargeDict.equal) {
-        count = enlargeDict.special
-        count++
+        count = enlargeDict.special + 1
     } else {
         count = enlargeDict.special
     }
@@ -310,18 +296,18 @@ var isMove = function (dictList) {
     return (sumSteps.length === 0)
 }
 
-var randomGenerationNumber = function (callBack, dictList) {
+var randomGenerationNumber = function (randomBack, dictList) {
     let timeOut = 130
     let isM = isMove(dictList)
     if (true) {
         setTimeout(() => {
-            callBack()
+            randomBack()
             cleanTarget()
         }, timeOut)
     } else {
         setTimeout(() => {
             cleanTarget()
-        }, timeOut);
+        }, timeOut)
         return
     }
 }
@@ -358,7 +344,7 @@ var CleaningElements = function (oldCells) {
         let cell = oldCells[i]
         cellInit(i, cell, oldCells, newCells)
     }
-    log('不删除的元素     ', targetDict.exclude)
+    log('不删除的元素     ·', targetDict.exclude)
 
 }
 
@@ -409,7 +395,7 @@ var enlargeTransform = function (dictList, cells) {
 var moveCallBack = function (startItem, endItem, cells, dictList) {
     let targetText = cellDict(startItem, cells).text
     setNumber(endItem, targetText)
-    targetDict.moveCount = targetDict.moveCount + 1
+    targetDict.moveCount += 1
     if (targetDict.moveCount === dictList.length) {
         CleaningElements(cells)
         enlargeTransform(dictList, cells)
@@ -493,7 +479,7 @@ var right = function () {
     move(list.numbers, cells)
 }
 
-var topMove = function () {
+var up = function () {
     let list = new NumberArray()
     let numbers = list.verticalFlip
     let cells = extractedList(list.numbers)
@@ -514,13 +500,13 @@ var keyboardDown = function () {
             return
         }
         const e = event
-        targetDict.transCount = targetDict.transCount + 1
+        targetDict.transCount += 1
         if (e.keyCode === 39) {
             right()
         } else if (e.keyCode === 37) {
             left()
         } else if (e.keyCode === 38) {
-            topMove()
+            up()
         } else if (e.keyCode === 40) {
             down()
         } else {
@@ -543,7 +529,7 @@ var mobileTouch = function () {
             right()
         })
         .on('swipeUp', function () {
-            topMove()
+            up()
         }).on('swipeDown', function () {
             down()
         })
