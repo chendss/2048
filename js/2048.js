@@ -510,7 +510,7 @@ var keyboardDown = function () {
         } else if (e.keyCode === 40) {
             down()
         } else {
-            log('按了鬼畜键？     ', e.keyCode)
+            log('按了鬼畜键？`', e.keyCode)
             targetDict.transCount = targetDict.transCount - 1
         }
     })
