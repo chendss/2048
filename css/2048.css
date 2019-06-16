@@ -1,214 +1,246 @@
 reord {
-    display: block;
+	display: block;
 }
 
 body {
-    text-align: center;
-    background: #faf8ef;
+	text-align: center;
+	background: #faf8ef;
 }
 
 line {
-    display: block;
-    text-align: center;
-    margin: 10px;
-    position: relative;
+	display: block;
+	text-align: center;
+	margin: 10px;
+	position: relative;
+}
+
+reord {
+	margin-bottom: 10px;
 }
 
 cell {
-    margin: 0.5px;
-    display: inline-block;
-    width: 7em;
-    height: 7em;
-    text-align: center;
-    vertical-align: top;
-    background: rgba(238, 228, 218, 0.35);
-    border-radius: 12%;
-    font-family: sans-serif;
-    font-weight: bold;
-    position: relative;
+	margin: 0.5px;
+	display: inline-block;
+	width: 7em;
+	height: 7em;
+	text-align: center;
+	vertical-align: top;
+	background: rgba(238, 228, 218, 0.35);
+	border-radius: 12%;
+	font-family: sans-serif;
+	font-weight: bold;
+	position: relative;
 }
 
 checkerboard {
-    opacity: 0.8;
-    background: #776e65;
-    display: inline-block;
-    border-radius: 4%;
+	opacity: 0.8;
+	background: #776e65;
+	display: inline-block;
+	border-radius: 4%;
 }
 
 number {
-    border-radius: 12%;
-    font-size: 3.5em;
-    width: 100%;
-    height: 100%;
-    display: inline-block;
-    line-height: 2em;
-    position: relative;
-    margin: 0px;
+	border-radius: 12%;
+	font-size: 3.5em;
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	line-height: 2em;
+	position: relative;
+	margin: 0px;
 }
 
 .rightMove-0 {
-    transform: translate(0px, 0px);
-    transition: 0.03s;
+	transform: translate(0px, 0px);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .rightMove-1 {
-    transform: translate(2.1em, 0px);
-    transition: 0.03s;
+	transform: translate(2.1em, 0px);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .rightMove-2 {
-    transform: translate(4.2em, 0px);
-    transition: 0.03s;
+	transform: translate(4.2em, 0px);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .rightMove-3 {
-    transform: translate(6.3em, 0px);
-    transition: 0.03s;
+	transform: translate(6.3em, 0px);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .leftMove-0 {
-    transform: translate(0px, 0px);
-    transition: 0.03s;
+	transform: translate(0px, 0px);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .leftMove-1 {
-    transform: translate(-2.1em, 0px);
-    transition: 0.03s;
+	transform: translate(-2.1em, 0px);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .leftMove-2 {
-    transform: translate(-4.2em, 0px);
-    transition: 0.03s;
+	transform: translate(-4.2em, 0px);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .leftMove-3 {
-    transform: translate(-6.3em, 0px);
-    transition: 0.03s;
+	transform: translate(-6.3em, 0px);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .downMove-0 {
-    transform: translate(0px, 0px);
-    transition: 0.003s;
+	transform: translate(0px, 0px);
+	transition: 0.003s;
+	z-index: 2;
 }
 
 .downMove-1 {
-    transform: translate(0px, 2.2em);
-    transition: 0.03s;
+	transform: translate(0px, 2.2em);
+	transition: 0.03s;
+	z-index: 2;
 }
 .downMove-2 {
-    transform: translate(0px, 4.4em);
-    transition: 0.03s;
+	transform: translate(0px, 4.4em);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .downMove-3 {
-    transform: translate(0px, 6.6em);
-    transition: 0.03s;
+	transform: translate(0px, 6.6em);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .topMove-0 {
-    transform: translate(0px, 0px);
-    transition: 0.003s;
+	transform: translate(0px, 0px);
+	transition: 0.003s;
+	z-index: 2;
 }
 
 .topMove-1 {
-    transform: translate(0px, -2.2em);
-    transition: 0.03s;
+	transform: translate(0px, -2.2em);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .topMove-2 {
-    transform: translate(0px, -4.4em);
-    transition: 0.03s;
+	transform: translate(0px, -4.4em);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .topMove-3 {
-    transform: translate(0px, -6.6em);
-    transition: 0.03s;
+	transform: translate(0px, -6.6em);
+	transition: 0.03s;
+	z-index: 2;
 }
 
 .enlarge {
-    transform: scale(1.2, 1.2);
-    transition: 0.15s;
+	transform: scale(1.2, 1.2);
+	transition: 0.15s;
 }
 
 .p2 {
-    background: #eee4da;
+	background: #eee4da;
 }
 
 .p4 {
-    background: #ede0c8;
+	background: #ede0c8;
 }
 
 .p8 {
-    background: #f2b179;
+	background: #f2b179;
 }
 
 .p16 {
-    background: #f59563;
+	background: #f59563;
 }
 
 .p32 {
-    background: #f67c5f;
+	background: #f67c5f;
 }
 
 .p64 {
-    background: #f65e3b;
+	background: #f65e3b;
 }
 
 .p128 {
-    background: #edcf72;
+	background: #edcf72;
 }
 
 .p256 {
-    background: #edcc61;
+	background: #edcc61;
 }
 
 .p512 {
-    background: #edc850;
+	background: #edc850;
 }
 
 .p1024 {
-    background: #edc53f;
-    font-size: 3em;
-    line-height: 2.5em;
+	background: #edc53f;
+	font-size: 3em;
+	line-height: 2.5em;
 }
 
 .p2048 {
-    background: #edc22e;
-    font-size: 3em;
-    line-height: 2.4em;
+	background: #edc22e;
+	font-size: 3em;
+	line-height: 2.4em;
+}
+
+#id-button-again {
+	border: 0;
+	background: #918a81;
+	margin: 0;
+	margin-bottom: 10px;
+	padding: 10px;
+	border-radius: 5px;
+	font-size: 16px;
+	color: #fff;
+	cursor: pointer;
 }
 
 @media screen and (max-device-width: 420px) {
-    cell {
-        width: 4.5em;
-        height: 4.5em;
-    }
-    number {
-        font-size: 2.8em;
-        line-height: 1.7em;
-    }
-    .p1024 {
-        font-size: 2em;
-    }
-    .p2048 {
-        font-size: 2em;
-    }
+	cell {
+		width: 4.5em;
+		height: 4.5em;
+	}
+	number {
+		font-size: 2.8em;
+		line-height: 1.7em;
+	}
+	.p1024 {
+		font-size: 2em;
+	}
+	.p2048 {
+		font-size: 2em;
+	}
 }
 
 @media screen and (max-device-width: 330px) {
-    cell {
-        width: 4em;
-        height: 4em;
-    }
-    number {
-        font-size: 2em;
-        line-height: 2em;
-    }
-    .p1024 {
-        font-size: 1.8em;
-        line-height: 2.2em;
-    }
-    .p2048 {
-        font-size: 1.8em;
-    }
+	cell {
+		width: 4em;
+		height: 4em;
+	}
+	number {
+		font-size: 2em;
+		line-height: 2em;
+	}
+	.p1024 {
+		font-size: 1.8em;
+		line-height: 2.2em;
+	}
+	.p2048 {
+		font-size: 1.8em;
+	}
 }
